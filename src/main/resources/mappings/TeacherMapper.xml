@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.njxz.project.dao.TeacherDao">
+    <select id="findOne" resultType="java.lang.String" parameterType="edu.njxz.project.model.Teacher">
+		select tpsw
+		from teacher
+		where tname = '${teacher.tname}'
+	</select>
+
+    <select id="getCoursekeys" resultType="edu.njxz.project.model.Course" parameterType="java.lang.String">
+		select tc.cid,tc.cnum,course.cname 
+		from
+				tc
+			left join
+				course
+			on(tc.cid=course.cid and tc.cnum=course.cnum)
+		where tc.tname = '${tname}'
+	</select>
+
+	<select id="getAllCoursekeys" resultType="edu.njxz.project.model.Course">
+		select tc.cid,tc.cnum,course.cname
+		from
+		tc
+		left join
+		course
+		on(tc.cid=course.cid and tc.cnum=course.cnum)
+	</select>
+
+    <insert id="insert" parameterType="edu.njxz.project.model.Teacher">
+		insert ignore
+		into teacher(tname,tpsw)
+		values ('${teacher.tname}','${teacher.tpwd}')
+	</insert>
+
+</mapper>

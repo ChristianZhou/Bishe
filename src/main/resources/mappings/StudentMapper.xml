@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.njxz.project.dao.StudentDao">
+    <select id="findAll" resultType="edu.njxz.project.model.Student">
+		select * from student
+	</select>
+
+
+    <select id="findByClass" resultType="edu.njxz.project.model.Student" parameterType="java.lang.Integer">
+		select * from
+		(
+			select stunum,
+				class1,class2,class3,class4,class5,
+				class6,class7,class8,class9,class10,
+				class11,class12,class13,class14,class15,
+				class16,class17,class18
+			from sc as sc
+			where cid=${cid} and cnum=${cnum}
+		) a
+		LEFT JOIN
+			student as student
+		USING(stunum)
+	</select>
+
+
+    <insert id="insert" parameterType="edu.njxz.project.model.Student">
+		insert ignore
+		into student(stunum,stuname,classnum)
+		values ('${student.stunum}','${student.stuname}','${student.classname}')
+	</insert>
+
+    <delete id="delete" parameterType="Integer">
+		delete
+		from student
+		where  stunum=${stunum}
+	</delete>
+    <delete id="deletesc" parameterType="Integer">
+		delete
+		from sc
+		where  stunum=${stunum}
+    </delete>
+
+    <update id="update" parameterType="edu.njxz.project.model.Student">
+		update sc
+		set
+		class1=${student.class1},
+		class2=${student.class2},
+		class3=${student.class3},
+		class4=${student.class4},
+		class5=${student.class5},
+		class6=${student.class6},
+		class7=${student.class7},
+		class8=${student.class8},
+		class9=${student.class9},
+		class10=${student.class10},
+		class11=${student.class11},
+		class12=${student.class12},
+		class13=${student.class13},
+		class14=${student.class14},
+		class15=${student.class15},
+		class16=${student.class16},
+		class17=${student.class17},
+		class18=${student.class18}
+		where stunum=${student.stunum} and cid=${student.cid} and cnum=${student.cnum}
+	</update>
+
+
+    <!--	app		-->
+
+    <update id="upload" parameterType="edu.njxz.project.model.UploadStudent" statementType="STATEMENT">
+		update sc
+		set class${uploadStudent.classnum}=0
+		where stunum=${uploadStudent.stunum} and cid=${uploadStudent.cid} and cnum=${uploadStudent.cnum}
+	</update>
+
+    <update id="uploadXX" parameterType="edu.njxz.project.model.UploadStudent" statementType="STATEMENT">
+		update sc
+		set class${uploadStudent.classnum}=1
+		where stunum=${uploadStudent.stunum} and cid=${uploadStudent.cid} and cnum=${uploadStudent.cnum}
+	</update>
+
+    <select id="findAllSc" resultType="edu.njxz.project.model.Sc" parameterType="java.lang.String">
+		select stunum,a.cid,a.cnum,stuname,cname from
+			(select sc.stunum,cid,cnum,stuname
+				from
+					sc
+				left join
+					student
+				ON (sc.stunum=student.stunum)
+			) as a
+		LEFT JOIN
+			course as course
+		on(a.cid=course.cid and a.cnum=course.cnum)
+		where tname='${tname}'
+	</select>
+
+    <select id="getClassSum" parameterType="java.lang.Integer" resultType="java.util.Map">
+			select stuname,total from
+			(
+				select
+				stunum,
+				IFNULL(class1,0)+IFNULL(class2,0)+IFNULL(class3,0)+IFNULL(class4,0)+IFNULL(class5,0)
+				+IFNULL(class6,0)+IFNULL(class7,0)+IFNULL(class8,0)+IFNULL(class9,0)+IFNULL(class10,0)
+				+IFNULL(class11,0)+IFNULL(class12,0)+IFNULL(class13,0)+IFNULL(class14,0)+IFNULL(class15,0)
+				+IFNULL(class16,0)+IFNULL(class17,0)+IFNULL(class18,0) total
+				from sc
+				where cid=${cid} and cnum=${cnum}
+				ORDER BY total desc limit 20
+			) a
+			left join
+			(select stunum,stuname from student) b
+			on(a.stunum=b.stunum)
+			ORDER BY total desc
+
+	</select>
+
+</mapper>

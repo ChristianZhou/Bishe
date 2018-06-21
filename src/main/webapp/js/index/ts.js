@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+$(function(){
+	$("#clicks").on("click",function(){
+		alert($("#username").textbox("getValue"));
+	});
+	
+	$('#pageGride').datagrid({
+		url:'UserController/pageGatagrid',
+		pagination:true,
+		columns:[[
+			 {field:'name',title:'姓名',width:100},
+		     {field:'departure',title:'起点',width:100},
+		     {field:'destination',title:'终点',width:100},
+		     {field:'trainnumber',title:'车次',width:100},
+		     {field:'time',title:'时间',width:100},
+		     {field:'opration',title:'操作',width:100,align:'right'}
+		]]
+	});
+});

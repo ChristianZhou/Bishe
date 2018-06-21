@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.njxz.project.dao.CourseDao">
+	
+	<insert id="insert"   parameterType="edu.njxz.project.model.Course">
+		insert ignore into
+		course(cid, cnum, credit, period,cname,cunit, stuamount, tname, timeandplace)
+		values 
+		(${course.cid},${course.cnum},${course.credit},${course.period},'${course.cname}','${course.cunit}','${course.stuamount}','${course.tname}','${course.timeandplace}')
+	</insert>
+
+	<insert id="inserttc" parameterType="edu.njxz.project.model.Course">
+		insert ignore into tc(tname,cid,cnum,tnum)
+		values('${course.tname}',${course.cid},${course.cnum},${course.tnum})
+	</insert>
+
+	<insert id="insertsc" parameterType="java.lang.Integer">
+		insert ignore into sc(stunum,cid,cnum)
+		values(${stunum},${cid},${cnum})
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from course
+		where cid=${cid} and cnum = ${cnum}
+	</delete>
+
+	<delete id="deletetc" parameterType="java.lang.Integer">
+		delete from tc
+		where cid=${cid} and cnum = ${cnum}
+	</delete>
+
+	<delete id="deletesc" parameterType="java.lang.Integer">
+		delete from sc
+		where cid=${cid} and cnum = ${cnum}
+	</delete>
+</mapper>
